@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+
+    <title>My Notes</title>
+  </head>
+  <body>
+    <div id="EnterNote">
+      <div class="form-group">
+        <textarea
+          id="note"
+          name="ypur note"
+          cols="10"
+          rows="5"
+          class="form-control"
+          style="width: 300px"
+        ></textarea>
+        <button
+          id="savebtn"
+          onClick="savebtn()"
+          class="btn btn-info mt-2"
+          style="padding: 10px"
+        >
+          Save
+        </button>
+      </div>
+      <button id="remove" onClick="removeitem()" class="btn btn-info">
+        Remove
+      </button>
+    </div>
+
+    <div id="result">thi is local storage</div>
+  </body>
+  <script>
+    window.onload = function () {
+      displayNote();
+    };
+
+    let itemarray = [];
+
+    function savebtn() {
+      let note = document.getElementById("note").value;
+      console.log(note);
+
+      // let note1 =JSON.stringify(note);
+      let getNote = JSON.parse(localStorage.getItem("ram"));
+
+      //   console.log(getNote);
+      // if the local storage is empty then it initialize the empty array
+      getNote = getNote ? getNote : [];
+      getNote.unshift(note);
+      localStorage.setItem("ram", JSON.stringify(getNote));
+
+      let rel = document.getElementById("result");
+      const noteEl = document.createElement("p");
+      console.log(note);
+
+      noteEl.innerHTML = note;
+      rel.append(noteEl);
+    }
+
+    function displayNote() {
+      let getNote = JSON.parse(localStorage.getItem("ram"));
+
+      console.log(getNote);
+      let rel = document.getElementById("result");
+      getNote.forEach((note) => {
+        const noteEl = document.createElement("p");
+        noteEl.innerHTML = note;
+        rel.append(noteEl);
+      });
+    }
+
+    function removeitem() {
+      localStorage.removeItem("ram");
+      let rel = document.getElementById("result");
+      rel.innerHTML = "this is local storage";
+    }
+    //    function clear()
+    //    {
+    //        if(savebtn.clicked)
+    //        {
+
+    //        }
+    //    }
+
+    // localStorage.setItem("lastname","surakchit");
+    // document.getElementById("result").innerHTML=localStorage.getItem("lastname");
+  </script>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+    <style>
+      #result {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .text_div {
+        margin-left: 40px;
+        padding: 20px 40px 20px 40px;
+        border-radius: 10px;
+        line-height: 40px;
+        color: #fff;
+        text-transform: capitalize;
+        margin-top: 40px;
+        background-color: #34a832;
+        position: relative;
+        text-align: center;
+      }
+      .arrow-up {
+        width: 0;
+        height: 0;
+        border-left: 60px solid transparent;
+        border-right: 60px solid transparent;
+
+        border-bottom: 35px solid #34a832;
+        position: absolute;
+        top: -21px;
+        right: 52px;
+      }
+      body {
+        padding: 45px 100px;
+      }
+      .buttons {
+        margin-left: 26%;
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="whole ml-5 mt-5">
+      <div class="form-group">
+        <label for="text"></label>
+        <textarea name="text" id="usertext" cols="110" rows="5"></textarea>
+      </div>
+      <div class="search">
+        <input type="text" id="searchtxt" />
+      </div>
+      <div class="buttons">
+        <div class="form-group">
+          <button
+            type="submit"
+            onclick="saveitem();"
+            class="btn btn-info p-2 pl-4 pr-4 text-center"
+            id="save"
+          >
+            Save
+          </button>
+        </div>
+        <div class="form-group">
+          <button
+            type="submit"
+            onclick="deleteAll()"
+            class="btn btn-danger pt-2 pl-2 ml-5"
+          >
+            Delete All
+          </button>
+        </div>
+
+        <!-- <div class="form-group">
+          <button
+            type="submit"
+            onclick="displayData()"
+            class="btn btn-info pt-2 pl-2 ml-5"
+          >
+            Display
+          </button>
+        </div> -->
+      </div>
+      <div id="result"></div>
+    </div>
+  </body>
+</html>
+
+<script>
+  var notes_key = "userdata";
+
+  window.onload = function () {
+    displayData();
+  };
+
+  var getNote = JSON.parse(localStorage.getItem(notes_key));
+
+  function saveitem() {
+    let userItems = document.getElementById("usertext").value;
+
+    getNote = getNote ? getNote : [];
+    getNote.push(userItems);
+    localStorage.setItem(notes_key, JSON.stringify(getNote));
+    // UpadteItmes(id);
+
+    displayData();
+    // console.log(id);
+  }
+  function displayData() {
+    let userData = JSON.parse(localStorage.getItem(notes_key));
+    // console.log(userData);
+
+    // let resutdata = document.getElementById("result");
+    notesDiv = "";
+
+    userData.forEach((value, index) => {
+      notesDiv =
+        notesDiv +
+        `<div class='text_div'>
+		<div>` +
+        value +
+        `</div>
+        <div class='arrow-up'></div>
+
+		<button id="remove" onClick="deleteItmes(` +
+        index +
+        `)" class="btn btn-danger">
+			Remove</button>
+
+      <button id="edit" onClick="UpadteItmes(` +
+        index +
+        `)" class="btn btn-info">
+			Edit</button>
+      
+      </div> <br/>`;
+    });
+    document.getElementById("result").innerHTML = notesDiv;
+    if (document.getElementById("usertext").value !== "") {
+      clearContent();
+    }
+  }
+
+  function deleteItmes(id) {
+    console.log(id);
+    let delNots = JSON.parse(localStorage.getItem(notes_key));
+    // delete delNots[id];
+
+    console.log(delNots);
+    delNots.splice(id, 1);
+    localStorage.setItem(notes_key, JSON.stringify(delNots));
+    let userData = JSON.parse(localStorage.getItem(notes_key));
+
+    document.getElementById("result").innerHTML = notesDiv;
+    location.reload();
+  }
+
+  function UpadteItmes(id) {
+    // console.log(id);
+
+    let userUpdata = JSON.parse(localStorage.getItem(notes_key));
+    // console.log(userUpdata);
+    let upadate = (document.getElementById(
+      "usertext"
+    ).innerHTML = userUpdata.splice(id, 1));
+
+    // document.getElementById("result").innerHTML = upadate;
+
+    document.getElementById("save").innerHTML = "Resave";
+    if (document.getElementById("save" == "Resave")) {
+      console.log(id);
+    }
+
+    // if (document.getElementById("usertext").innerHTML == "") {
+    //   document.getElementById("usertext").innerHTML == userUpdata.splice(id, 1);
+    // }
+    // // document.getElementById("result").innerHTML = upadate;
+    // userUpdata.append(upadate);
+  }
+  function deleteAll() {
+    localStorage.removeItem("userdata");
+    location.reload();
+  }
+
+  function clearContent() {
+    document.getElementById("usertext").value = "";
+  }
+  function search() {}
+</script>
